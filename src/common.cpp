@@ -61,7 +61,7 @@ void init() {
 
 static bool mainloop_active = false;
 
-void mainloop(int refresh) {
+void mainloop( void(*poll_rust_data)(), int refresh) {
     if (mainloop_active)
         throw std::runtime_error("Main loop is already running!");
 
@@ -104,6 +104,8 @@ void mainloop(int refresh) {
                 mainloop_active = false;
                 break;
             }
+            
+            poll_rust_data();
 
             /* Wait for mouse/keyboard or empty refresh events */
             glfwWaitEvents();
